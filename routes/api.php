@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ExperienceController;
+use App\Http\Controllers\ProjectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \Laravel\Fortify\Http\Controllers\{AuthenticatedSessionController,
@@ -38,5 +40,7 @@ Route::prefix('auth')->group(function () {
 
     Route::apiResources([
         'contact' => ContactController::class,
+        'experience' => ExperienceController::class,
+        'project' => ProjectController::class,
     ]);
 });
