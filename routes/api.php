@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContactController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \Laravel\Fortify\Http\Controllers\{AuthenticatedSessionController,
@@ -34,4 +35,8 @@ Route::prefix('auth')->group(function () {
             'throttle:' . '6,1',
             'auth:sanctum'
         ]);
+
+    Route::apiResources([
+        'contact' => ContactController::class,
+    ]);
 });
