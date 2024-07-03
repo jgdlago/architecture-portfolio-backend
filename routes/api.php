@@ -22,9 +22,9 @@ Route::get('/user', function (Request $request) {
  * Auth Routes
  */
 Route::prefix('auth')->group(function () {
-    Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login');
-    Route::post('/register', [RegisteredUserController::class, 'store'])->name('register');
-    Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.reset');
+    Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+    Route::post('/register', [RegisteredUserController::class, 'store']);
+    Route::post('/forgot-password', [PasswordResetLinkController::class, 'store']);
     Route::post('/logout', [LogoutController::class, 'destroy'])
         ->middleware('auth:sanctum')
         ->name('logout');
