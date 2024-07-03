@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \Laravel\Fortify\Http\Controllers\{AuthenticatedSessionController,
     RegisteredUserController,
@@ -7,9 +8,15 @@ use \Laravel\Fortify\Http\Controllers\{AuthenticatedSessionController,
     ProfileInformationController
 };
 use App\Http\Controllers\Auth\{
+    EmailVerificationNotificationController,
     PasswordResetLinkController,
     LogoutController,
 };
+
+
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
 
 /*
  * Auth Routes
@@ -24,7 +31,7 @@ Route::prefix('auth')->group(function () {
 
     Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
         ->middleware([
-            'throttle:'.'6,1',
+            'throttle:' . '6,1',
             'auth:sanctum'
         ]);
 });
