@@ -1,5 +1,6 @@
 services:
-    architecture-portfolio-api:
+    laravel.test:
+        container_name: architecture-portfolio-api
         build:
             context: './vendor/laravel/sail/runtimes/8.5'
             dockerfile: Dockerfile
@@ -22,8 +23,9 @@ services:
         networks:
             - sail
         depends_on:
-            - architecture-portfolio-database
-    architecture-portfolio-database:
+            - pgsql
+    pgsql:
+        container_name: architecture-portfolio-database
         image: 'postgres:18-alpine'
         ports:
             - '${FORWARD_DB_PORT:-5432}:5432'
