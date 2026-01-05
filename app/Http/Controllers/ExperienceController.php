@@ -40,7 +40,7 @@ class ExperienceController extends Controller
         return new ExperienceResource($experience, 201);
     }
 
-    public function update(ExperienceRequest $request,Experience $experience): JsonResource
+    public function update(ExperienceRequest $request, Experience $experience): JsonResource
     {
         $experience->update($request->validated());
 
