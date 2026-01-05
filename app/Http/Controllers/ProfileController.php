@@ -5,24 +5,26 @@ namespace App\Http\Controllers;
 use App\Models\Profile;
 use Illuminate\Http\Response;
 use App\Http\Requests\ProfileRequest;
+use App\Http\Resources\ProfileResource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProfileController extends Controller
 {
-    public function show(Profile $profile): Response
+    public function show(Profile $profile): JsonResource
     {
-        return response($profile);
+        return new ProfileResource($profile);
     }
     
-    public function store(ProfileRequest $request): Response
+    public function store(ProfileRequest $request): JsonResource
     {
         $profile = auth()->user()->profile()->create($request->validated());
-        return response($profile, 201);
+        return new ProfileResource($profile, 201);
     }
 
-    public function update(ProfileRequest $request, Profile $profile): Response
+    public function update(ProfileRequest $request, Profile $profile): JsonResource
     {
         $profile->update($request->validated());
-        return response($profile);
+        return new ProfileResource($profile);
     }
 
     public function destroy(Profile $profile): Response
