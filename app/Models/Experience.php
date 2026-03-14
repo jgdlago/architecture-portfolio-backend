@@ -2,37 +2,38 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Experience extends Model
 {
     use HasFactory;
 
-    protected $table = 'experiences';
-
     protected $fillable = [
+        'user_id',
+        'title',
         'company',
-        'position',
         'description',
-        'user_id'
+        'start_date',
+        'end_date',
+        'is_current',
     ];
 
-    /**
-     * @return BelongsTo
-     */
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+        'is_current' => 'boolean',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * @return HasMany
-     */
-    public function images(): HasMany
+    public function scopeCurrent(Builder $query): Builder
     {
-        return $this->hasMany(ProjectImage::class);
+        return $query->where('is_current', true);
     }
 }

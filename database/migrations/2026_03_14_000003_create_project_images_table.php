@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('project_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('project_id')
-                ->constrained('projects');
-            $table->foreignId('image_id')
-                ->constrained('images');
+            $table->foreignId('project_id')->constrained()->cascadeOnDelete();
+            $table->string('image_path');
+            $table->string('alt_text')->nullable();
+            $table->text('caption')->nullable();
+            $table->unsignedInteger('sort_order')->default(0);
+            $table->boolean('is_cover')->default(false);
             $table->timestamps();
+
+            $table->index(['project_id', 'sort_order']);
         });
     }
 

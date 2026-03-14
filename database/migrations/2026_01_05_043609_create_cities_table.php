@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('cities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')
-                ->constrained('users');
-            $table->string('title', 100);
-            $table->string('city', 100);
-            $table->text('description');
+            $table->string('name');
+            $table->string('ibge_code')->unique();
+            $table->string('state');
+            $table->string('state_abbreviation', 2);
+            $table->string('country')->default('Brasil');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('projects');
+        Schema::dropIfExists('cities');
     }
 };
