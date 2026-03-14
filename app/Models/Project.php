@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Project extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'title',
@@ -44,5 +47,14 @@ class Project extends Model
     public function images(): HasMany
     {
         return $this->hasMany(ProjectImage::class)->orderBy('sort_order');
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (Project $project): void {
+            if (empty($project->slug)) {
+                $project->slug = Str::slug($project->title);
+            }
+        });
     }
 }

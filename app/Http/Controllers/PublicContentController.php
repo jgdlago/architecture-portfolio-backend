@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ExperienceResource;
+use App\Http\Resources\ProfileResource;
 use App\Http\Resources\ProjectListResource;
 use App\Models\Project;
+use App\Models\ProjectCategory;
 use App\Models\SiteSetting;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
 class PublicContentController extends Controller
@@ -27,5 +32,44 @@ class PublicContentController extends Controller
             'settings' => $settings,
             'featured_projects' => ProjectListResource::collection($featuredProjects),
         ]);
+    }
+
+    public function about(): JsonResponse
+    {
+        $adminEmail = config('app.admin_email');
+        $user = User::where('email', $adminEmail)->first();
+
+        $profile = null;
+        $experiences = [];
+
+        if ($user) {
+            $user->load(['profile.city', 'experiences']);
+            $profile = $user->profile ? new ProfileResource($user->profile) : null;
+            $experiences = ExperienceResource::collection(
+                $user->experiences()->orderByDesc('start_date')->get()
+            );
+        }
+
+        $aboutSetting = SiteSetting::where('key', 'about')->first();
+
+        return response()->json([
+            'profile' => $profile,
+            'experiences' => $experiences,
+            'settings' => $aboutSetting?->value,
+            'user' => $user ? [
+                'name' => $user->name,
+                'cau' => $user->cau,
+            ] : null,
+        ]);
+    }
+
+    public function categories(): JsonResponse
+    {
+        $categories = ProjectCategory::query()
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->get(['id', 'name', 'slug']);
+
+        return response()->json($categories);
     }
 }

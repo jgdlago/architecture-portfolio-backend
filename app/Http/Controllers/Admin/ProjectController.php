@@ -35,7 +35,7 @@ class ProjectController extends Controller
     {
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'max:255', 'unique:projects,slug'],
+            'slug' => ['nullable', 'string', 'max:255', 'unique:projects,slug'],
             'short_description' => ['nullable', 'string', 'max:500'],
             'description' => ['nullable', 'string'],
             'project_category_id' => ['nullable', 'exists:project_categories,id'],
