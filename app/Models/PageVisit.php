@@ -14,6 +14,7 @@ class PageVisit extends Model
         'ip_address',
         'user_agent',
         'referer',
+        'visitor_key',
     ];
 
     protected static function booted(): void
