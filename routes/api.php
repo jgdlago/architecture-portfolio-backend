@@ -30,7 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('profile', ProfileController::class)->except('index');
     Route::apiResource('experience', ExperienceController::class);
 
-    Route::prefix('admin')->group(function () {
+    Route::prefix('admin')->middleware('admin')->group(function () {
         Route::apiResource('project-categories', ProjectCategoryController::class)->except(['show']);
         Route::apiResource('projects', AdminProjectController::class);
         Route::get('projects/{project}/images', [ProjectImageController::class, 'index']);
