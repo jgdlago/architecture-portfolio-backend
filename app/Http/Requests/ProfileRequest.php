@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ProfileHeadlinesEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ProfileRequest extends FormRequest
 {
@@ -22,10 +24,10 @@ class ProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'headline' => 'required|string|max:255',
+            'headline' => ['required', Rule::enum(ProfileHeadlinesEnum::class)],
             'bio' => 'nullable|string',
-            'city_id' => 'required|exists:cities,id',
-            'years_experience' => 'required|integer|min:0',
+            'city_id' => 'nullable|exists:cities,id',
+            'years_experience' => 'nullable|integer|min:0',
             'avatar_path' => 'nullable|string|max:255',
         ];
     }

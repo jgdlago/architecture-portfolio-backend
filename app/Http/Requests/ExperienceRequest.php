@@ -23,10 +23,11 @@ class ExperienceRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'company' => 'required|string|max:255',
+            'company' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after:start_date',
-            'is_current' => 'boolean'
+            'is_current' => 'sometimes|boolean',
         ];
     }
 }
