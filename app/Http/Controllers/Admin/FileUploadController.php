@@ -5,9 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class FileUploadController extends Controller
 {
+    private function diskName(): string
+    {
+        return config('filesystems.default') === 's3' ? 's3' : 'public';
+    }
+
     public function store(Request $request): JsonResponse
     {
         $request->validate([
@@ -16,11 +22,12 @@ class FileUploadController extends Controller
         ]);
 
         $folder = $request->input('folder', 'uploads');
-        $path = $request->file('file')->store($folder, 'public');
+        $diskName = $this->diskName();
+        $path = $request->file('file')->store($folder, $diskName);
 
         return response()->json([
             'path' => $path,
-            'url' => asset('storage/' . $path),
+            'url' => Storage::disk($diskName)->url($path),
         ], 201);
     }
 
@@ -31,8 +38,7 @@ class FileUploadController extends Controller
         ]);
 
         $path = $request->input('path');
-
-        $disk = \Illuminate\Support\Facades\Storage::disk('public');
+        $disk = Storage::disk($this->diskName());
 
         if ($disk->exists($path)) {
             $disk->delete($path);

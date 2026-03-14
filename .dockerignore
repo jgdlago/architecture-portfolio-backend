@@ -1,0 +1,12 @@
+node_modules/
+vendor/
+.env
+.env.local
+docker-compose.yml
+tests/
+.git/
+.github/
+storage/logs/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/framework/cache/*

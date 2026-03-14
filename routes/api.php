@@ -16,7 +16,9 @@ use App\Http\Controllers\PublicProjectController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/auth/register', [AuthController::class, 'register']);
+if (config('app.allow_registration')) {
+    Route::post('/auth/register', [AuthController::class, 'register']);
+}
 Route::post('/auth/login', [AuthController::class, 'login'])
     ->middleware('throttle:login');
 

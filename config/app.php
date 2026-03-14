@@ -55,6 +55,9 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     'admin_email' => env('ADMIN_EMAIL'),
+    'admin_password' => env('ADMIN_PASSWORD'),
+    'admin_name' => env('ADMIN_NAME', 'Admin'),
+    'allow_registration' => (bool) env('ALLOW_REGISTRATION', false),
 
     /*
     |--------------------------------------------------------------------------
