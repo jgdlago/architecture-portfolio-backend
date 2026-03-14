@@ -28,6 +28,10 @@ class ProjectImageController extends Controller
             'is_cover' => ['sometimes', 'boolean'],
         ]);
 
+        if (($validated['is_cover'] ?? false) === true) {
+            $project->images()->update(['is_cover' => false]);
+        }
+
         $image = $project->images()->create($validated);
 
         if ($image->is_cover) {
@@ -49,10 +53,22 @@ class ProjectImageController extends Controller
             'is_cover' => ['sometimes', 'boolean'],
         ]);
 
+        if (($validated['is_cover'] ?? false) === true) {
+            $project->images()
+                ->where('id', '!=', $projectImage->id)
+                ->update(['is_cover' => false]);
+        }
+
         $projectImage->update($validated);
 
         if (($validated['is_cover'] ?? false) === true) {
             $project->update(['cover_image_path' => $projectImage->image_path]);
+        }
+
+        if (($validated['is_cover'] ?? null) === false
+            && $project->cover_image_path === $projectImage->image_path
+        ) {
+            $project->update(['cover_image_path' => null]);
         }
 
         return new ProjectImageResource($projectImage);
@@ -62,7 +78,22 @@ class ProjectImageController extends Controller
     {
         abort_unless($projectImage->project_id === $project->id, 404);
 
+        $removedPath = $projectImage->image_path;
+
         $projectImage->delete();
+
+        if ($project->cover_image_path === $removedPath) {
+            $replacementCover = $project->images()->orderBy('sort_order')->orderBy('id')->first();
+
+            $project->update([
+                'cover_image_path' => $replacementCover?->image_path,
+            ]);
+
+            if ($replacementCover) {
+                $project->images()->update(['is_cover' => false]);
+                $replacementCover->update(['is_cover' => true]);
+            }
+        }
 
         return response()->noContent();
     }
