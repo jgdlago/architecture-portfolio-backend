@@ -10,11 +10,10 @@ use App\Models\ProjectCategory;
 use App\Models\SiteSetting;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 
 class PublicContentController extends Controller
 {
-    public function home(): Response
+    public function home(): JsonResponse
     {
         $settings = SiteSetting::query()
             ->whereIn('key', ['hero', 'about', 'contact', 'footer', 'experience', 'process'])
@@ -28,9 +27,11 @@ class PublicContentController extends Controller
             ->limit(6)
             ->get();
 
-        return response([
+        return response()->json([
             'settings' => $settings,
-            'featured_projects' => ProjectListResource::collection($featuredProjects),
+            'featured_projects' => [
+                'data' => ProjectListResource::collection($featuredProjects),
+            ],
         ]);
     }
 
