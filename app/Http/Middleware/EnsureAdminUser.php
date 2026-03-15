@@ -14,16 +14,10 @@ class EnsureAdminUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $adminEmail = config('app.admin_email');
-
-        if (! is_string($adminEmail) || $adminEmail === '') {
-            abort(500, 'ADMIN_EMAIL is not configured.');
-        }
-
         /** @var \App\Models\User|null $user */
         $user = Auth::user();
 
-        abort_unless($user && strcasecmp($user->email, $adminEmail) === 0, 403);
+        abort_unless($user && $user->is_admin, 403);
 
         return $next($request);
     }
