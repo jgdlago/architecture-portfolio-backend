@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ContactMessageController as AdminContactMessageController;
+use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FileUploadController;
 use App\Http\Controllers\Admin\ProjectCategoryController;
@@ -41,6 +42,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('admin')->middleware('admin')->group(function () {
         Route::get('dashboard/stats', [DashboardController::class, 'stats']);
+
+        Route::put('account', [AccountController::class, 'update']);
+        Route::put('account/password', [AccountController::class, 'updatePassword']);
 
         Route::post('upload', [FileUploadController::class, 'store']);
         Route::delete('upload', [FileUploadController::class, 'destroy']);
