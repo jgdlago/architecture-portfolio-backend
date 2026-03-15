@@ -16,7 +16,7 @@ class PublicContentController extends Controller
     public function home(): JsonResponse
     {
         $settings = SiteSetting::query()
-            ->whereIn('key', ['hero', 'about', 'contact', 'footer', 'experience', 'process'])
+            ->whereIn('key', ['hero', 'about', 'contact', 'footer', 'experience', 'process', 'featured_projects', 'footer_services', 'seo', 'navbar'])
             ->pluck('value', 'key');
 
         $featuredProjects = Project::query()

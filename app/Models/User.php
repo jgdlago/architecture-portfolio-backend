@@ -19,13 +19,15 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'cau'
+        'cau',
+        'is_admin',
     ];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'cau' => 'string',
+        'is_admin' => 'boolean',
     ];
 
     protected $hidden = [

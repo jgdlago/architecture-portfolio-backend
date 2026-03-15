@@ -18,7 +18,11 @@ it('returns featured projects on home payload with data envelope', function () {
         ->assertOk()
         ->assertJsonPath('featured_projects.data.0.slug', 'residencia-dal-lago')
         ->assertJsonPath('featured_projects.data.0.is_featured', true)
-        ->assertJsonPath('settings.hero.title', 'Arquitetura como narrativa espacial');
+        ->assertJsonPath('settings.hero.title', 'Arquitetura como narrativa espacial')
+        ->assertJsonPath('settings.featured_projects.title', 'Projetos Selecionados')
+        ->assertJsonPath('settings.footer_services.title', 'Serviços')
+        ->assertJsonPath('settings.seo.title', 'Iara Tedesco | Arquitetura & Urbanismo')
+        ->assertJsonPath('settings.navbar.brand_name', 'Iara Tedesco');
 });
 
 it('loads project detail by slug from public listing', function () {

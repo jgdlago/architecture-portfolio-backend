@@ -57,6 +57,30 @@ class SiteSettingsSeeder extends Seeder
                 'copyright' => '© 2026 Todos os direitos reservados',
                 'cau' => 'CAU/BR A304967-1',
             ],
+            'featured_projects' => [
+                'title' => 'Projetos Selecionados',
+                'description' => 'Uma curadoria dos trabalhos mais representativos.',
+            ],
+            'footer_services' => [
+                'title' => 'Serviços',
+                'items' => [
+                    'Projetos Arquitetônicos',
+                    'Interiores',
+                    'Consultoria',
+                ],
+            ],
+            'seo' => [
+                'title' => 'Iara Tedesco | Arquitetura & Urbanismo',
+                'description' => 'Iara Tedesco — Arquitetura & Urbanismo. Projetos residenciais e comerciais guiados por luz, contexto e identidade.',
+            ],
+            'navbar' => [
+                'brand_name' => 'Iara Tedesco',
+                'brand_role' => 'Arquitetura & Urbanismo',
+                'home_label' => 'Home',
+                'projects_label' => 'Projetos',
+                'about_label' => 'Sobre',
+                'contact_label' => 'Contato',
+            ],
         ];
 
         foreach ($settings as $key => $value) {
