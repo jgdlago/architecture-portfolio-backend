@@ -12,11 +12,19 @@ class PublicProjectController extends Controller
 {
     public function index(): AnonymousResourceCollection
     {
+        $categoryFilter = trim((string) request('category', request('category_slug', '')));
+        $normalizedFilter = mb_strtolower($categoryFilter);
+
         $projects = Project::query()
             ->with('category')
-            ->when(request('category'), function ($query, string $category): void {
-                $query->whereHas('category', function ($categoryQuery) use ($category): void {
-                    $categoryQuery->where('slug', $category);
+            ->when($categoryFilter !== '', function ($query) use ($categoryFilter, $normalizedFilter): void {
+                $query->whereHas('category', function ($categoryQuery) use ($categoryFilter, $normalizedFilter): void {
+                    $categoryQuery->whereRaw('LOWER(TRIM(slug)) = ?', [$normalizedFilter])
+                        ->orWhereRaw('LOWER(TRIM(name)) = ?', [$normalizedFilter]);
+
+                    if (ctype_digit($categoryFilter)) {
+                        $categoryQuery->orWhere('id', (int) $categoryFilter);
+                    }
                 });
             })
             ->whereNotNull('published_at')
