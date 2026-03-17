@@ -90,7 +90,8 @@ class SiteSettingController extends Controller
                 'instagram_url' => ['nullable', 'string', 'max:255'],
                 'linkedin_url' => ['nullable', 'string', 'max:255'],
                 'email' => ['nullable', 'email', 'max:255'],
-                'whatsapp_url' => ['nullable', 'string', 'max:255'],
+                'whatsapp_number' => ['nullable', 'string', 'max:30'],
+                'whatsapp_message' => ['nullable', 'string', 'max:500'],
             ],
             'footer' => [
                 'brand_name' => ['nullable', 'string', 'max:255'],

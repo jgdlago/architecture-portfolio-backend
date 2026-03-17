@@ -44,7 +44,8 @@ class SiteSettingsSeeder extends Seeder
                 'instagram_url' => 'https://www.instagram.com/',
                 'linkedin_url' => 'https://www.linkedin.com/',
                 'email' => 'contato@exemplo.com',
-                'whatsapp_url' => '#',
+                'whatsapp_number' => '5551999999999',
+                'whatsapp_message' => 'Ola! Gostaria de falar sobre um projeto.',
             ],
             'footer' => [
                 'brand_name' => 'Iara Tedesco',
