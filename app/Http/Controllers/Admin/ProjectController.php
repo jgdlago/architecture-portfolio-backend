@@ -46,8 +46,9 @@ class ProjectController extends Controller
             'additional_info' => ['nullable', 'array'],
             'is_featured' => ['sometimes', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
-            'published_at' => ['nullable', 'date'],
         ]);
+
+        $validated['published_at'] = now();
 
         $project = Project::create($validated);
 
@@ -71,8 +72,11 @@ class ProjectController extends Controller
             'additional_info' => ['nullable', 'array'],
             'is_featured' => ['sometimes', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
-            'published_at' => ['nullable', 'date'],
         ]);
+
+        if ($project->published_at === null) {
+            $validated['published_at'] = now();
+        }
 
         $project->update($validated);
 

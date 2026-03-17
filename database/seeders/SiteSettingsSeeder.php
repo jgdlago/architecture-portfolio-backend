@@ -30,12 +30,12 @@ class SiteSettingsSeeder extends Seeder
                 ],
             ],
             'experience' => [
-                'title' => 'Atuacao',
+                'title' => 'Atuação',
                 'subtitle' => 'Arquitetura aplicada a diferentes escalas e contextos, sempre com atencao ao lugar e as pessoas.',
                 'blocks' => [
                     ['title' => 'Tipologias', 'items' => ['Residencial', 'Comercial', 'Institucional', 'Interiores']],
-                    ['title' => 'Experiencia', 'items' => ['+6 anos de pratica profissional', 'Projetos executivos e acompanhamento de obra', 'Atuacao do conceito a execucao']],
-                    ['title' => 'Atuacao', 'items' => ['Brasil', 'Projetos remotos', 'Contextos urbanos e naturais']],
+                    ['title' => 'Experiencia', 'items' => ['+6 anos de pratica profissional', 'Projetos executivos e acompanhamento de obra', 'Atuação do conceito a execucao']],
+                    ['title' => 'Atuação', 'items' => ['Brasil', 'Projetos remotos', 'Contextos urbanos e naturais']],
                 ],
             ],
             'contact' => [
