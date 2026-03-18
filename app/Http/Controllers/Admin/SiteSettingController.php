@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use App\Support\PublicApiCache;
 
 class SiteSettingController extends Controller
 {
@@ -56,6 +57,8 @@ class SiteSettingController extends Controller
             ['key' => $key],
             ['value' => $validated['value'] ?? null],
         );
+
+        PublicApiCache::bust();
 
         return response($setting);
     }

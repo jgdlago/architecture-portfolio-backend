@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateAdminAccountPasswordRequest;
 use App\Http\Requests\UpdateAdminAccountRequest;
+use App\Support\PublicApiCache;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -30,6 +31,8 @@ class AccountController extends Controller
             'email' => $nextEmail,
             'cau' => $validated['cau'] ?? null,
         ]);
+
+        PublicApiCache::bust();
 
         return response([
             'user' => $user->fresh(),

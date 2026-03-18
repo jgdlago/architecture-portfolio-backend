@@ -11,6 +11,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
+use App\Support\PublicApiCache;
 
 class ExperienceController extends Controller
 {
@@ -44,6 +45,8 @@ class ExperienceController extends Controller
 
         $experience = $user->experiences()->create($request->validated());
 
+        PublicApiCache::bust();
+
         return (new ExperienceResource($experience))->response()->setStatusCode(201);
     }
 
@@ -53,6 +56,8 @@ class ExperienceController extends Controller
 
         $experience->update($request->validated());
 
+        PublicApiCache::bust();
+
         return new ExperienceResource($experience);
     }
 
@@ -61,6 +66,8 @@ class ExperienceController extends Controller
         $this->authorizeOwner($experience->user_id);
 
         $experience->delete();
+
+        PublicApiCache::bust();
 
         return response()->noContent(204);
     }

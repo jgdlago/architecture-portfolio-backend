@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ProjectCategory;
+use App\Support\PublicApiCache;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -21,6 +22,8 @@ class ProjectCategoryController extends Controller
                 ->whereKey($id)
                 ->update(['sort_order' => $index]);
         }
+
+        PublicApiCache::bust();
 
         return response([
             'message' => 'Project categories order updated.',
@@ -43,6 +46,8 @@ class ProjectCategoryController extends Controller
 
         $category = ProjectCategory::create($validated);
 
+        PublicApiCache::bust();
+
         return response($category, 201);
     }
 
@@ -57,12 +62,16 @@ class ProjectCategoryController extends Controller
 
         $projectCategory->update($validated);
 
+        PublicApiCache::bust();
+
         return response($projectCategory);
     }
 
     public function destroy(ProjectCategory $projectCategory): Response
     {
         $projectCategory->delete();
+
+        PublicApiCache::bust();
 
         return response()->noContent();
     }

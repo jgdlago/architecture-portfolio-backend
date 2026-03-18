@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use App\Support\PublicApiCache;
 
 class ProjectImageController extends Controller
 {
@@ -40,6 +41,8 @@ class ProjectImageController extends Controller
                 ->update(['sort_order' => $index]);
         }
 
+        PublicApiCache::bust();
+
         return response()->json([
             'message' => 'Project image order updated.',
         ]);
@@ -69,6 +72,8 @@ class ProjectImageController extends Controller
         if ($image->is_cover) {
             $project->update(['cover_image_path' => $image->image_path]);
         }
+
+        PublicApiCache::bust();
 
         return (new ProjectImageResource($image))->response()->setStatusCode(201);
     }
@@ -103,6 +108,8 @@ class ProjectImageController extends Controller
             $project->update(['cover_image_path' => null]);
         }
 
+        PublicApiCache::bust();
+
         return new ProjectImageResource($projectImage);
     }
 
@@ -126,6 +133,8 @@ class ProjectImageController extends Controller
                 $replacementCover->update(['is_cover' => true]);
             }
         }
+
+        PublicApiCache::bust();
 
         return response()->noContent();
     }

@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use App\Support\PublicApiCache;
 
 class ProjectController extends Controller
 {
@@ -28,6 +29,8 @@ class ProjectController extends Controller
                     ->update(['sort_order' => $index]);
             }
         });
+
+        PublicApiCache::bust();
 
         return response()->json([
             'message' => 'Project order updated.',
@@ -73,6 +76,8 @@ class ProjectController extends Controller
 
         $project = Project::create($validated);
 
+        PublicApiCache::bust();
+
         return (new ProjectDetailResource($project->load(['category', 'images'])))
             ->response()
             ->setStatusCode(201);
@@ -101,12 +106,16 @@ class ProjectController extends Controller
 
         $project->update($validated);
 
+        PublicApiCache::bust();
+
         return new ProjectDetailResource($project->load(['category', 'images']));
     }
 
     public function destroy(Project $project): Response
     {
         $project->delete();
+
+        PublicApiCache::bust();
 
         return response()->noContent();
     }

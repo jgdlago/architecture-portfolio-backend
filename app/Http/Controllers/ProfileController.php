@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
+use App\Support\PublicApiCache;
 
 class ProfileController extends Controller
 {
@@ -29,6 +30,8 @@ class ProfileController extends Controller
             $request->validated(),
         );
 
+        PublicApiCache::bust();
+
         return (new ProfileResource($profile))->response()->setStatusCode(201);
     }
 
@@ -38,6 +41,8 @@ class ProfileController extends Controller
 
         $profile->update($request->validated());
 
+        PublicApiCache::bust();
+
         return new ProfileResource($profile);
     }
 
@@ -46,6 +51,8 @@ class ProfileController extends Controller
         $this->authorizeOwner($profile->user_id);
 
         $profile->delete();
+
+        PublicApiCache::bust();
 
         return response()->noContent(204);
     }
