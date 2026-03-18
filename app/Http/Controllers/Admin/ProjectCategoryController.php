@@ -9,6 +9,24 @@ use Illuminate\Http\Response;
 
 class ProjectCategoryController extends Controller
 {
+    public function reorder(Request $request): Response
+    {
+        $validated = $request->validate([
+            'ids' => ['required', 'array', 'min:1'],
+            'ids.*' => ['integer', 'distinct', 'exists:project_categories,id'],
+        ]);
+
+        foreach ($validated['ids'] as $index => $id) {
+            ProjectCategory::query()
+                ->whereKey($id)
+                ->update(['sort_order' => $index]);
+        }
+
+        return response([
+            'message' => 'Project categories order updated.',
+        ]);
+    }
+
     public function index(): Response
     {
         return response(ProjectCategory::query()->orderBy('sort_order')->get());

@@ -10,9 +10,30 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class ProjectController extends Controller
 {
+    public function reorder(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'ids' => ['required', 'array', 'min:1'],
+            'ids.*' => ['integer', 'distinct', 'exists:projects,id'],
+        ]);
+
+        DB::transaction(function () use ($validated): void {
+            foreach ($validated['ids'] as $index => $id) {
+                Project::query()
+                    ->whereKey($id)
+                    ->update(['sort_order' => $index]);
+            }
+        });
+
+        return response()->json([
+            'message' => 'Project order updated.',
+        ]);
+    }
+
     public function index(): AnonymousResourceCollection
     {
         $projects = Project::query()

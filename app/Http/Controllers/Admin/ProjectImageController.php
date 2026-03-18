@@ -13,6 +13,38 @@ use Illuminate\Http\Response;
 
 class ProjectImageController extends Controller
 {
+    public function reorder(Request $request, Project $project): JsonResponse
+    {
+        $validated = $request->validate([
+            'ids' => ['required', 'array', 'min:1'],
+            'ids.*' => [
+                'integer',
+                'distinct',
+                'exists:project_images,id',
+            ],
+        ]);
+
+        $belongsToProject = $project->images()
+            ->whereIn('id', $validated['ids'])
+            ->count();
+
+        if ($belongsToProject !== count($validated['ids'])) {
+            return response()->json([
+                'message' => 'One or more images do not belong to this project.',
+            ], 422);
+        }
+
+        foreach ($validated['ids'] as $index => $id) {
+            $project->images()
+                ->whereKey($id)
+                ->update(['sort_order' => $index]);
+        }
+
+        return response()->json([
+            'message' => 'Project image order updated.',
+        ]);
+    }
+
     public function index(Project $project): AnonymousResourceCollection
     {
         return ProjectImageResource::collection($project->images);
