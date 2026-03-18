@@ -73,4 +73,16 @@ class PublicContentController extends Controller
 
         return response()->json($categories);
     }
+
+    public function theme(): JsonResponse
+    {
+        $settings = SiteSetting::query()
+            ->whereIn('key', ['theme_colors', 'theme_typography'])
+            ->pluck('value', 'key');
+
+        return response()->json([
+            'theme_colors' => $settings->get('theme_colors'),
+            'theme_typography' => $settings->get('theme_typography'),
+        ]);
+    }
 }

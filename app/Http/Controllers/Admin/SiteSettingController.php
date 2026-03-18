@@ -22,6 +22,8 @@ class SiteSettingController extends Controller
         'footer_services',
         'seo',
         'navbar',
+        'theme_colors',
+        'theme_typography',
     ];
 
     public function index(): Response
@@ -124,6 +126,32 @@ class SiteSettingController extends Controller
                 'projects_label' => ['nullable', 'string', 'max:50'],
                 'about_label' => ['nullable', 'string', 'max:50'],
                 'contact_label' => ['nullable', 'string', 'max:50'],
+            ],
+            'theme_colors' => [
+                'light' => ['required', 'array'],
+                'dark' => ['required', 'array'],
+                'light.background' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+                'light.surface' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+                'light.surface_elevated' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+                'light.primary_text' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+                'light.contrast_gold' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+                'light.contrast_brown' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+                'light.accent' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+                'light.hero_text' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+                'dark.background' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+                'dark.surface' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+                'dark.surface_elevated' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+                'dark.primary_text' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+                'dark.contrast_gold' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+                'dark.contrast_brown' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+                'dark.accent' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+                'dark.hero_text' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            ],
+            'theme_typography' => [
+                'font_heading' => ['required', 'string', 'max:120'],
+                'font_body' => ['required', 'string', 'max:120'],
+                'font_size_body' => ['required', 'regex:/^[0-9]+(\\.[0-9]+)?(px|rem|em|%)$/'],
+                'line_height_body' => ['required', 'regex:/^[0-9]+(\\.[0-9]+)?$/'],
             ],
             default => [],
         };

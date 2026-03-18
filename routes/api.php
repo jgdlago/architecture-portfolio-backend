@@ -25,6 +25,7 @@ Route::post('/auth/login', [AuthController::class, 'login'])
 
 Route::get('/home', [PublicContentController::class, 'home']);
 Route::get('/about', [PublicContentController::class, 'about']);
+Route::get('/theme', [PublicContentController::class, 'theme']);
 Route::get('/project-categories', [PublicContentController::class, 'categories']);
 Route::get('/projects', [PublicProjectController::class, 'index']);
 Route::get('/projects/{slug}', [PublicProjectController::class, 'show']);
