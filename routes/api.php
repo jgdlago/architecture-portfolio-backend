@@ -50,10 +50,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('upload', [FileUploadController::class, 'store']);
         Route::delete('upload', [FileUploadController::class, 'destroy']);
 
+        Route::put('project-categories/reorder', [ProjectCategoryController::class, 'reorder']);
         Route::apiResource('project-categories', ProjectCategoryController::class)->except(['show']);
+        Route::put('projects/reorder', [AdminProjectController::class, 'reorder']);
         Route::apiResource('projects', AdminProjectController::class);
         Route::get('projects/{project}/images', [ProjectImageController::class, 'index']);
         Route::post('projects/{project}/images', [ProjectImageController::class, 'store']);
+        Route::put('projects/{project}/images/reorder', [ProjectImageController::class, 'reorder']);
         Route::put('projects/{project}/images/{projectImage}', [ProjectImageController::class, 'update']);
         Route::delete('projects/{project}/images/{projectImage}', [ProjectImageController::class, 'destroy']);
 
