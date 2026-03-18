@@ -10,9 +10,33 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use App\Support\PublicApiCache;
 
 class ProjectController extends Controller
 {
+    public function reorder(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'ids' => ['required', 'array', 'min:1'],
+            'ids.*' => ['integer', 'distinct', 'exists:projects,id'],
+        ]);
+
+        DB::transaction(function () use ($validated): void {
+            foreach ($validated['ids'] as $index => $id) {
+                Project::query()
+                    ->whereKey($id)
+                    ->update(['sort_order' => $index]);
+            }
+        });
+
+        PublicApiCache::bust();
+
+        return response()->json([
+            'message' => 'Project order updated.',
+        ]);
+    }
+
     public function index(): AnonymousResourceCollection
     {
         $projects = Project::query()
@@ -52,6 +76,8 @@ class ProjectController extends Controller
 
         $project = Project::create($validated);
 
+        PublicApiCache::bust();
+
         return (new ProjectDetailResource($project->load(['category', 'images'])))
             ->response()
             ->setStatusCode(201);
@@ -80,12 +106,16 @@ class ProjectController extends Controller
 
         $project->update($validated);
 
+        PublicApiCache::bust();
+
         return new ProjectDetailResource($project->load(['category', 'images']));
     }
 
     public function destroy(Project $project): Response
     {
         $project->delete();
+
+        PublicApiCache::bust();
 
         return response()->noContent();
     }

@@ -11,6 +11,7 @@ uses(RefreshDatabase::class);
 it('keeps only one cover image when selecting a project image as cover', function () {
     $admin = User::factory()->create([
         'email' => 'admin@example.com',
+        'is_admin' => true,
     ]);
 
     Sanctum::actingAs($admin);

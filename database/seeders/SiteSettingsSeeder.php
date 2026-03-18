@@ -44,7 +44,8 @@ class SiteSettingsSeeder extends Seeder
                 'instagram_url' => 'https://www.instagram.com/',
                 'linkedin_url' => 'https://www.linkedin.com/',
                 'email' => 'contato@exemplo.com',
-                'whatsapp_url' => '#',
+                'whatsapp_number' => '5551999999999',
+                'whatsapp_message' => 'Ola! Gostaria de falar sobre um projeto.',
             ],
             'footer' => [
                 'brand_name' => 'Iara Tedesco',
@@ -80,6 +81,34 @@ class SiteSettingsSeeder extends Seeder
                 'projects_label' => 'Projetos',
                 'about_label' => 'Sobre',
                 'contact_label' => 'Contato',
+            ],
+            'theme_colors' => [
+                'light' => [
+                    'background' => '#ECECEC',
+                    'surface' => '#f2f0ec',
+                    'surface_elevated' => '#f8f6f1',
+                    'primary_text' => '#333333',
+                    'contrast_gold' => '#B4A078',
+                    'contrast_brown' => '#8C857A',
+                    'accent' => '#6C7883',
+                    'hero_text' => '#ffffff',
+                ],
+                'dark' => [
+                    'background' => '#1A1A1A',
+                    'surface' => '#211f1c',
+                    'surface_elevated' => '#2a2723',
+                    'primary_text' => '#FFFFFF',
+                    'contrast_gold' => '#A0895F',
+                    'contrast_brown' => '#6B6354',
+                    'accent' => '#5A6978',
+                    'hero_text' => '#ffffff',
+                ],
+            ],
+            'theme_typography' => [
+                'font_heading' => 'Playfair Display',
+                'font_body' => 'Inter',
+                'font_size_body' => '1rem',
+                'line_height_body' => '1.7',
             ],
         ];
 

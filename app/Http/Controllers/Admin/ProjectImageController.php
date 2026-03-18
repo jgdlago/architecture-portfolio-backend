@@ -10,9 +10,44 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use App\Support\PublicApiCache;
 
 class ProjectImageController extends Controller
 {
+    public function reorder(Request $request, Project $project): JsonResponse
+    {
+        $validated = $request->validate([
+            'ids' => ['required', 'array', 'min:1'],
+            'ids.*' => [
+                'integer',
+                'distinct',
+                'exists:project_images,id',
+            ],
+        ]);
+
+        $belongsToProject = $project->images()
+            ->whereIn('id', $validated['ids'])
+            ->count();
+
+        if ($belongsToProject !== count($validated['ids'])) {
+            return response()->json([
+                'message' => 'One or more images do not belong to this project.',
+            ], 422);
+        }
+
+        foreach ($validated['ids'] as $index => $id) {
+            $project->images()
+                ->whereKey($id)
+                ->update(['sort_order' => $index]);
+        }
+
+        PublicApiCache::bust();
+
+        return response()->json([
+            'message' => 'Project image order updated.',
+        ]);
+    }
+
     public function index(Project $project): AnonymousResourceCollection
     {
         return ProjectImageResource::collection($project->images);
@@ -37,6 +72,8 @@ class ProjectImageController extends Controller
         if ($image->is_cover) {
             $project->update(['cover_image_path' => $image->image_path]);
         }
+
+        PublicApiCache::bust();
 
         return (new ProjectImageResource($image))->response()->setStatusCode(201);
     }
@@ -71,6 +108,8 @@ class ProjectImageController extends Controller
             $project->update(['cover_image_path' => null]);
         }
 
+        PublicApiCache::bust();
+
         return new ProjectImageResource($projectImage);
     }
 
@@ -94,6 +133,8 @@ class ProjectImageController extends Controller
                 $replacementCover->update(['is_cover' => true]);
             }
         }
+
+        PublicApiCache::bust();
 
         return response()->noContent();
     }
